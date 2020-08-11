@@ -1,3 +1,5 @@
+import {string} from "../string";
+
 export class Clock{
 
     hour = 0;
@@ -35,8 +37,6 @@ export class Clock{
     }
 
     toString(){
-        const displayHour = this.getHour() < 10 ? "0"+ this.getHour() : this.getHour();
-        const displayMinute = this.getMinute() < 10 ? "0"+ this.getMinute() : this.getMinute();
-        return `Day: ${this.getDay()} | Time ${displayHour}:${displayMinute}`
+        return `Day: ${this.getDay()} | Time ${string.doubleDigitFill(this.getHour())}:${string.doubleDigitFill(this.getMinute())}`
     }
 }
