@@ -49,6 +49,13 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
         }
     }
 
+    setName(name: string){
+        this.tamagotchi.name = name
+    }
+    getName(){
+        return this.tamagotchi.name;
+    }
+
     poop(){
         if(this.poopLevel.getValue() > 5){
             this.happiness.increment(1);
@@ -192,7 +199,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
 
 }
 
-export function newTamagotchi(){
+export function createTamagotchi(){
     return new Tamagotchi({
         lifeCycle: LifeCycleEnum.EGG,
         happiness: 5,
@@ -203,6 +210,7 @@ export function newTamagotchi(){
         createdAt: new Date(),
         lastUpdated: new Date(),
         poop: 0,
-        health: 10
+        health: 10,
+        name: "",
     })
 }

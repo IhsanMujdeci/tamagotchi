@@ -11,4 +11,5 @@ export type Model = {
     createdAt: Date,
     lastUpdated: Date,
     poop: number
+    name: string
 }

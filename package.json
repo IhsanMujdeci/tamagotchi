@@ -4,16 +4,18 @@
   "description": "A simple starter for ts with node",
   "main": "index.js",
   "scripts": {
-    "test": "echo 'Not implimented yet'",
+    "test": "jest",
     "build": "tsc",
-    "init": "tsc -- --init",
-    "start": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "start": "ts-node-dev --respawn --transpile-only src/index.ts",
   },
   "author": "Ihsan aka, lvcid aka yung apriori",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^26.0.9",
     "@types/node": "^11.9.0",
     "cli-block": "^1.1.7",
+    "jest": "^26.3.0",
+    "ts-jest": "^26.1.4",
     "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.3.3"
   }

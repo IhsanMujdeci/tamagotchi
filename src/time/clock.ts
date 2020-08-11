@@ -21,6 +21,18 @@ export class Clock{
         this.day = this.day + additionalDays
     }
 
+    getMinute(){
+        return this.minute
+    }
+
+    getDay(){
+        return this.day
+    }
+
+    getHour(){
+        return this.hour
+    }
+
     toString(){
         const displayHour = this.hour < 10 ? "0"+ this.hour : this.hour;
         const displayMinute = this.minute < 10 ? "0"+ this.minute : this.minute;

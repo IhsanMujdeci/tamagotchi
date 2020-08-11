@@ -5,10 +5,8 @@ import { onKeyPressListener } from "./cli/keypress";
 import { time } from "./time";
 import { string } from "./string";
 
-const myTamagotchi = tamagotchi.newTamagotchi();
-
+const myTamagotchi = tamagotchi.createTamagotchi();
 let clock = new time.Clock();
-let name = "";
 
 async function start() {
     cli.clearConsole();
@@ -17,7 +15,7 @@ async function start() {
     startFrame.print();
 
     const q = new stream.Query(process.stdin, process.stdout);
-    name = await q.question("");
+    myTamagotchi.setName(await q.question(""));
 
     const keyInputStream = stream.createReadStream();
 
@@ -44,7 +42,7 @@ function draw(inputString: cli.UserInputs){
     userInputHandler(inputString);
     myTamagotchi.tick();
     const drawFrame = new cli.Frame(
-        `Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`,
+        `Tamagotchi ${myTamagotchi.getName()} | Age ${myTamagotchi.getAge()}`,
         [
             `${clock}`,
             `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${string.doubleDigitFill(myTamagotchi.weight.getValue())}`,
@@ -75,4 +73,3 @@ function userInputHandler(input: cli.UserInputs) {
         myTamagotchi.poop()
     }
 }
-
