@@ -1,10 +1,18 @@
-# NODE-TS Starter
-Acts as a basic foundation to do ts work.
+# Tamagotchi CLI
+Take care of your tamagotchi less it grows unhappy and resents you its whole life.
 
 ## How to use
 
 `npm install`  
 `npm start`
+
+When in the game the commands are
+```
+[f] to feed
+[b] to put to bed
+[p] prompt poop time
+[c] clear events
+```
 
 ## Commands
 
