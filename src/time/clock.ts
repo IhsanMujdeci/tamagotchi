@@ -1,28 +1,29 @@
 export class Clock{
     hour = 0;
     minute = 0;
+    day = 0;
 
     // returns number of days past for minute increment
-    incrementMinute(inc: number): number{
+    incrementMinute(inc: number) {
         let newMin = this.minute + inc;
         const additionalHours =  Math.floor(newMin / 60);
         newMin = newMin - additionalHours * 60;
         this.minute = newMin;
-        return this.incrementHour(additionalHours)
+        this.incrementHour(additionalHours)
     }
 
     // returns number of days past for hour increment
-    incrementHour(inc: number): number{
+    incrementHour(inc: number){
         let newHour = this.hour + inc;
         const additionalDays =  Math.floor( newHour/ 24);
         newHour = newHour - additionalDays * 24;
         this.hour = newHour;
-        return additionalDays
+        this.day = this.day + additionalDays
     }
 
     toString(){
         const displayHour = this.hour < 10 ? "0"+ this.hour : this.hour;
         const displayMinute = this.minute < 10 ? "0"+ this.minute : this.minute;
-        return `${displayHour}:${displayMinute}`
+        return `Day: ${this.day} | Time ${displayHour}:${displayMinute}`
     }
 }

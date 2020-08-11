@@ -8,7 +8,6 @@ import { string } from "./string";
 const myTamagotchi = tamagotchi.newTamagotchi();
 
 let clock = new time.Clock();
-let day = 0;
 let name = "";
 
 void async function start() {
@@ -34,8 +33,7 @@ void async function start() {
 
 function setIntervalClock(keyInputStream: stream.Pushable) {
     setInterval(()=>{
-        const additionalDay = clock.incrementHour(6);
-        day += additionalDay;
+        clock.incrementHour(6);
         keyInputStream.push(Buffer.from("blank"));
     }, 500);
 }
@@ -67,7 +65,7 @@ function draw(inputString: UserInputs){
     userInputHandler(inputString);
     myTamagotchi.tick();
     const drawFrame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
-        `Day: ${day} | Time ${clock}`,
+        `${clock}`,
         `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${myTamagotchi.weight.getValue()}`,
         `Happiness : ${string.doubleDigitFill(myTamagotchi.happiness.getValue())}  | Hunger: ${string.doubleDigitFill(myTamagotchi.hunger.getValue())}`,
         `Sleepiness: ${string.doubleDigitFill(myTamagotchi.sleepiness.getValue())}  | Poop  : ${string.doubleDigitFill(myTamagotchi.poopLevel.getValue())}`,
