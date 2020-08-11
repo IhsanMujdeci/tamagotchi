@@ -30,9 +30,6 @@ void async function start() {
         cli.clearConsole();
         draw(chunk.toString())
     }
-
-    console.log('hey')
-
 }();
 
 function setIntervalClock(keyInputStream: stream.Pushable) {
