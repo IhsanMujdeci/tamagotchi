@@ -10,26 +10,6 @@ const myTamagotchi = tamagotchi.newTamagotchi();
 let clock = new time.Clock();
 let name = "";
 
-void async function start() {
-    cli.clearConsole();
-
-    let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
-    startFrame.print();
-
-    const q = new stream.Query(process.stdin, process.stdout);
-    name = await q.question("");
-
-    const keyInputStream = stream.createReadStream();
-
-    onKeyPressListener(keyInputStream);
-    setIntervalClock(keyInputStream);
-
-    for await (const chunk of keyInputStream) {
-        cli.clearConsole();
-        draw(chunk.toString())
-    }
-}();
-
 function setIntervalClock(keyInputStream: stream.Pushable) {
     setInterval(()=>{
         clock.incrementHour(6);
@@ -71,3 +51,23 @@ function draw(inputString: cli.UserInputs){
 
 }
 
+async function start() {
+    cli.clearConsole();
+
+    let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
+    startFrame.print();
+
+    const q = new stream.Query(process.stdin, process.stdout);
+    name = await q.question("");
+
+    const keyInputStream = stream.createReadStream();
+
+    onKeyPressListener(keyInputStream);
+    setIntervalClock(keyInputStream);
+
+    for await (const chunk of keyInputStream) {
+        cli.clearConsole();
+        draw(chunk.toString())
+    }
+}
+start();
