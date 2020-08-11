@@ -11,15 +11,23 @@ export class Statistic {
         }
     }
 
-    increment(){
+    increment(inc: number = 1){
         if(!this.isMax()){
-            this.value ++
+            let newValue = this.value + inc;
+            if(newValue > this.max){
+                newValue = this.max
+            }
+            this.value = newValue
         }
     }
 
-    decrement(){
+    decrement(dec: number = 1){
         if(!this.isMin()){
-            this.value --
+            let newValue = this.value - dec;
+            if(newValue < this.min){
+                newValue = this.min
+            }
+            this.value = newValue
         }
     }
 

@@ -21,6 +21,8 @@ export class Clock{
     }
 
     toString(){
-        return `${this.hour}:${this.minute}`
+        const displayHour = this.hour < 10 ? "0"+ this.hour : this.hour;
+        const displayMinute = this.minute < 10 ? "0"+ this.minute : this.minute;
+        return `${displayHour}:${displayMinute}`
     }
 }

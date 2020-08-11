@@ -10,7 +10,7 @@ export interface Printer {
 export class Start implements Scene{
 
     render(): string {
-        return "Welcome to tamagotchi, press any button to continue";
+        return "Welcome to tamagotchi, enter in your tamagotchi's name!";
     }
 
 }
