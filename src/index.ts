@@ -10,47 +10,6 @@ const myTamagotchi = tamagotchi.newTamagotchi();
 let clock = new time.Clock();
 let name = "";
 
-function setIntervalClock(keyInputStream: stream.Pushable) {
-    setInterval(()=>{
-        clock.incrementHour(6);
-        keyInputStream.push(Buffer.from("blank"));
-    }, 500);
-}
-
-function userInputHandler(input: cli.UserInputs) {
-    if(input === cli.UserInputs.FEED){
-        myTamagotchi.feed()
-    }
-    if(input === cli.UserInputs.CLEAR){
-        myTamagotchi.clearEvents()
-    }
-    if(input === cli.UserInputs.SlEEP){
-        myTamagotchi.sleep()
-    }
-    if(input === cli.UserInputs.POOP){
-        myTamagotchi.poop()
-    }
-}
-
-function draw(inputString: cli.UserInputs){
-
-    userInputHandler(inputString);
-    myTamagotchi.tick();
-    const drawFrame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
-        `${clock}`,
-        `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${myTamagotchi.weight.getValue()}`,
-        `Happiness : ${string.doubleDigitFill(myTamagotchi.happiness.getValue())}  | Hunger: ${string.doubleDigitFill(myTamagotchi.hunger.getValue())}`,
-        `Sleepiness: ${string.doubleDigitFill(myTamagotchi.sleepiness.getValue())}  | Poop  : ${string.doubleDigitFill(myTamagotchi.poopLevel.getValue())}`,
-        '',
-        `Events`,
-        '------',
-        ...myTamagotchi.getEvents()
-    ]);
-    drawFrame.print();
-    cli.logCommands();
-
-}
-
 async function start() {
     cli.clearConsole();
 
@@ -71,3 +30,49 @@ async function start() {
     }
 }
 start();
+
+
+function setIntervalClock(keyInputStream: stream.Pushable) {
+    setInterval(()=>{
+        clock.incrementHour(6);
+        keyInputStream.push(Buffer.from("blank"));
+    }, 500);
+}
+
+function draw(inputString: cli.UserInputs){
+
+    userInputHandler(inputString);
+    myTamagotchi.tick();
+    const drawFrame = new cli.Frame(
+        `Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`,
+        [
+            `${clock}`,
+            `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${string.doubleDigitFill(myTamagotchi.weight.getValue())}`,
+            `Happiness : ${string.doubleDigitFill(myTamagotchi.happiness.getValue())}  | Hunger: ${string.doubleDigitFill(myTamagotchi.hunger.getValue())}`,
+            `Sleepiness: ${string.doubleDigitFill(myTamagotchi.sleepiness.getValue())}  | Poop  : ${string.doubleDigitFill(myTamagotchi.poopLevel.getValue())}`,
+            '',
+            `Events`,
+            '------',
+            ...myTamagotchi.getEvents()
+        ]
+    );
+    drawFrame.print();
+    cli.logCommands();
+
+}
+
+function userInputHandler(input: cli.UserInputs) {
+    if(input === cli.UserInputs.FEED){
+        myTamagotchi.feed()
+    }
+    if(input === cli.UserInputs.CLEAR){
+        myTamagotchi.clearEvents()
+    }
+    if(input === cli.UserInputs.SlEEP){
+        myTamagotchi.sleep()
+    }
+    if(input === cli.UserInputs.POOP){
+        myTamagotchi.poop()
+    }
+}
+

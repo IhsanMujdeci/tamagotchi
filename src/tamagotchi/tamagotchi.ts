@@ -96,12 +96,6 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
                 return;
             }
 
-            this.hunger.increment(2.5);
-
-            if(this.hunger.getValue() < 5){
-                this.happiness.increment(1)
-            }
-
             this.sleepiness.increment(3);
             if(this.sleepiness.isMax()){
                 this.needsSleepTicker = this.needsSleepTicker + 1;
@@ -111,26 +105,19 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
                     this.sleepiness.reset();
                     this.pushEvent("Your tamagotchi slept by its self")
                 }
-
             }
 
+            this.hunger.increment(2.5);
             if(this.hunger.isMax()){
                 this.health.decrement(2.5)
-            }
-            if(this.health.isMin()){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD
-                this.pushEvent("Your tamagotchi died due to low health :'(")
-                return;
-            }
-
-
-
-            if(this.hunger.getValue() < 5){
+            } else if(this.hunger.getValue() < 5){
                 this.health.increment();
+                this.happiness.increment(1)
                 this.poopLevel.increment(2.5)
             } else {
                 this.poopLevel.increment(1.5)
             }
+
             if(this.hunger.getValue() > 7){
                 this.health.decrement(0.5);
                 this.weight.decrement(1);
@@ -146,7 +133,12 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
                     this.events.push("Your tamagotchi pooped its self :(")
                 }
             }
-            if(this.getAge() > 21){
+
+            if(this.health.isMin()){
+                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD;
+                this.pushEvent("Your tamagotchi died due to low health :'(");
+                return;
+            }else if(this.getAge() > 21){
                 if(this.tamagotchi.lifeCycle === LifeCycleEnum.ADULT){
                     return
                 }

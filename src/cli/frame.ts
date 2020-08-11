@@ -1,6 +1,8 @@
 import * as log from "cli-block";
 
-import {Printer} from "./start";
+export interface Printer {
+    print(): void;
+}
 
 export class Frame implements Printer {
     constructor(private title: string, private lines: string[]) {
