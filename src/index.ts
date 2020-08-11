@@ -17,7 +17,7 @@ void async function start() {
     cli.clearConsole();
     frame.print();
 
-    await cli.awaitKeyPress();
+    // await cli.awaitKeyPress();
 
     const q = new stream.Query(process.stdin, process.stdout);
     name = await q.question("");
@@ -28,7 +28,7 @@ void async function start() {
     setInterval(()=>{
         const additionalDay = clock.incrementHour(6);
         day += additionalDay;
-        keyInputStream.push(Buffer.from("time"));
+        keyInputStream.push(Buffer.from("blank"));
     }, 500);
 
     for await (const chunk of keyInputStream) {
@@ -45,7 +45,7 @@ enum UserInputs {
     FEED = "f",
     CLEAR = "c",
     SlEEP = "b",
-    POOP = "p"
+    POOP = "p",
 }
 
 function userInputHandler(input: UserInputs) {
@@ -65,14 +65,13 @@ function userInputHandler(input: UserInputs) {
 
 function draw(inputString: UserInputs){
 
-    // make thing to map character to function
     userInputHandler(inputString);
     myTamagotchi.tick();
     frame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
         `Day: ${day} | Time ${clock}`,
-        `Life Cycle: ${myTamagotchi.getLifeCycle()}`,
-        `Health: ${myTamagotchi.health.getValue()}`,
-        `Happiness: ${myTamagotchi.happiness.getValue()} | Weight: ${myTamagotchi.weight.getValue()} | Hunger ${myTamagotchi.hunger.getValue()} | Sleepiness ${myTamagotchi.sleepiness.getValue()} | Poop ${myTamagotchi.poopLevel.getValue()}`,
+        `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${myTamagotchi.weight.getValue()}`,
+        `Happiness: ${myTamagotchi.happiness.getValue()}  | Hunger: ${myTamagotchi.hunger.getValue()}`,
+        `Sleepiness: ${myTamagotchi.sleepiness.getValue()} | Poop: ${myTamagotchi.poopLevel.getValue()}`,
         '',
         `Events`,
         '------',
@@ -80,7 +79,6 @@ function draw(inputString: UserInputs){
     ]);
     frame.print();
     logCommands();
-    console.log(myTamagotchi.tick());
 
 }
 
