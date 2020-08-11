@@ -82,7 +82,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
         const ticksSinceLastCheck = this.ticksSinceLastCheck();
 
         for(let i =0; i < ticksSinceLastCheck; i++){
-
+            this.upadted();
 
             if(this.tamagotchi.lifeCycle === LifeCycleEnum.DEAD){
                 return
@@ -124,7 +124,9 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
             }
 
 
+
             if(this.hunger.getValue() < 5){
+                this.health.increment();
                 this.poopLevel.increment(2.5)
             } else {
                 this.poopLevel.increment(1.5)
@@ -172,7 +174,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
                 this.tamagotchi.lifeCycle = LifeCycleEnum.EGG
             }
 
-            this.upadted()
+
         }
     }
 

@@ -7,8 +7,6 @@ import { string } from "./string";
 
 const myTamagotchi = tamagotchi.newTamagotchi();
 
-const start = new cli.Start();
-let frame = new cli.Frame("Tamagotchi", ['', start.render(), '']);
 let clock = new time.Clock();
 let day = 0;
 let name = "";
@@ -16,25 +14,34 @@ let name = "";
 void async function start() {
     cli.clearConsole();
 
-    frame.print();
+    const start = new cli.Start();
+    let startFrame = new cli.Frame("Tamagotchi", ['', start.render(), '']);
+    startFrame.print();
+
     const q = new stream.Query(process.stdin, process.stdout);
     name = await q.question("");
 
     const keyInputStream = stream.createReadStream();
-    onKeyPressListener(keyInputStream);
 
-    setInterval(()=>{
-        const additionalDay = clock.incrementHour(6);
-        day += additionalDay;
-        keyInputStream.push(Buffer.from("blank"));
-    }, 500);
+    onKeyPressListener(keyInputStream);
+    setIntervalClock(keyInputStream);
 
     for await (const chunk of keyInputStream) {
         cli.clearConsole();
         draw(chunk.toString())
     }
 
+    console.log('hey')
+
 }();
+
+function setIntervalClock(keyInputStream: stream.Pushable) {
+    setInterval(()=>{
+        const additionalDay = clock.incrementHour(6);
+        day += additionalDay;
+        keyInputStream.push(Buffer.from("blank"));
+    }, 500);
+}
 
 enum UserInputs {
     FEED = "f",
@@ -62,7 +69,7 @@ function draw(inputString: UserInputs){
 
     userInputHandler(inputString);
     myTamagotchi.tick();
-    frame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
+    const drawFrame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
         `Day: ${day} | Time ${clock}`,
         `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${myTamagotchi.weight.getValue()}`,
         `Happiness : ${string.doubleDigitFill(myTamagotchi.happiness.getValue())}  | Hunger: ${string.doubleDigitFill(myTamagotchi.hunger.getValue())}`,
@@ -72,7 +79,7 @@ function draw(inputString: UserInputs){
         '------',
         ...myTamagotchi.getEvents()
     ]);
-    frame.print();
+    drawFrame.print();
     logCommands();
 
 }

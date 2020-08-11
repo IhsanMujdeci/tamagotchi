@@ -6,6 +6,10 @@ export function createReadStream(){
     });
 }
 
+export interface Pushable {
+    push(chunk: any, encoding?: string): boolean;
+}
+
 //
 // const inputStream = createReadStream();
 //
