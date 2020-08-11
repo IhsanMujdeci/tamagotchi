@@ -1,9 +1,8 @@
-import { tamagotchi } from './tamagotchi'
-import { cli } from './cli'
-import { stream } from "./stream";
-import { onKeyPressListener } from "./cli/keypress";
-import { time } from "./time";
-import { string } from "./string";
+import { tamagotchi } from '@tamagotchi/tamagotchi'
+import { cli } from '@tamagotchi/cli'
+import { stream } from "@tamagotchi/stream";
+import { time } from "@tamagotchi/time";
+import { string } from "@tamagotchi/string";
 
 const myTamagotchi = tamagotchi.createTamagotchi();
 let clock = new time.Clock();
@@ -19,7 +18,7 @@ async function start() {
 
     const keyInputStream = stream.createReadStream();
 
-    onKeyPressListener(keyInputStream);
+    cli.onKeyPressListener(keyInputStream);
     setIntervalClock(keyInputStream);
 
     for await (const chunk of keyInputStream) {
