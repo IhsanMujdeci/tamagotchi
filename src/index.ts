@@ -1,17 +1,39 @@
-import {tamagotchi} from './tamagotchi'
+import { tamagotchi } from './tamagotchi'
+import { cli } from './cli'
+import { createReadStream } from "./stream/event-asyc-itterator";
+import { onKey } from "./cli/keypress";
 
+const myTamagotchi = tamagotchi.newTamagotchi();
 
+const start = new cli.Start();
+let frame = new cli.Frame("Tamagotchi", ['', start.render(), '']);
 
-// import {StreamQuery} from "./stream/streamquery";
-// async function main(){
-//     const streamQuery = new StreamQuery(process.stdin, process.stdout);
-//     const response = await streamQuery.question("Hey\n");
-// }
-// void main();
+void async function start() {
+    cli.clearConsole();
+    frame.print();
 
-/**
- *
- * David is talking about
- *
- **/
+    await cli.awaitKeyPress();
 
+    const keyInputStream = createReadStream();
+    onKey(keyInputStream);
+    draw();
+
+    for await (const chunk of keyInputStream) {
+        draw(chunk.toString())
+    }
+
+}();
+
+function draw(inputString: string = ""){
+    cli.clearConsole();
+
+    if(inputString === "f"){
+        myTamagotchi.feed()
+    }
+
+    frame = new cli.Frame("Tamagotchi", [
+        `Happiness: ${myTamagotchi.happiness.getValue()}, Weight: ${myTamagotchi.weight.getValue()}, Hunger ${myTamagotchi.hunger.getValue()}`
+    ]);
+    frame.print();
+    console.log('press f to feed');
+}

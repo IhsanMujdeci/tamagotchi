@@ -1,5 +1,6 @@
 import {Model} from "./model";
 import {Statistic} from "./statistic";
+import {LifeCycleEnum} from "./lifecycle";
 
 interface Feeder {
     feed(): void
@@ -16,12 +17,13 @@ interface Pooper {
 // maybe as time goes on we can decrement hunger, increment sleepiness,
 // depending on hunger level poop can
 
-class Tamagotchi implements Feeder, Sleeper, Pooper{
+export class Tamagotchi implements Feeder, Sleeper, Pooper{
 
-    private happiness: Statistic;
-    private sleepiness: Statistic;
-    private hunger: Statistic;
-    private poopLevel: Statistic;
+    happiness: Statistic;
+    sleepiness: Statistic;
+    hunger: Statistic;
+    poopLevel: Statistic;
+    weight: Statistic;
 
     constructor(
         private tamagotchi: Model
@@ -30,11 +32,13 @@ class Tamagotchi implements Feeder, Sleeper, Pooper{
         this.sleepiness = new Statistic(tamagotchi.sleepiness);
         this.hunger = new Statistic(tamagotchi.hunger);
         this.poopLevel = new Statistic(tamagotchi.poop);
+        this.weight = new Statistic(tamagotchi.weight)
     }
 
     feed(){
         if(!this.hunger.isMax()){
-            this.hunger.increment();
+            this.hunger.decrement();
+            this.weight.increment();
             this.happiness.increment();
         }
     }
@@ -51,4 +55,17 @@ class Tamagotchi implements Feeder, Sleeper, Pooper{
         }
     }
 
+}
+
+export function newTamagotchi(){
+    return new Tamagotchi({
+        lifeCycle: LifeCycleEnum.BABY,
+        happiness: 5,
+        age: 0,
+        weight: 1,
+        hunger: 5,
+        sleepiness: 5,
+        createdAt: new Date(),
+        poop: 0
+    })
 }
