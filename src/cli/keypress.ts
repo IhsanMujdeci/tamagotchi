@@ -1,5 +1,3 @@
-import * as stream from "stream";
-
 const readline = require('readline');
 readline.emitKeypressEvents(process.stdin);
 
@@ -10,26 +8,12 @@ type key = {
     meta: boolean,
     shift: boolean
 }
-type KeypressCallback = (str: string, key: key) => void
-
-export function createOnKeyPress(callback?: KeypressCallback){
-    // @ts-ignore
-    process.stdin.setRawMode(true);
-    return process.stdin.on('keypress', (str: string, key: key) => {
-        if (key.ctrl && key.name === 'c') {
-            process.exit();
-        }
-        if(callback){
-            callback(str, key)
-        }
-    });
-}
 
 interface Pushable {
     push(chunk: any, encoding?: string): boolean;
 }
 
-export function onKey(stream: Pushable){
+export function onKeyPressListener(stream: Pushable){
     // @ts-ignore
     process.stdin.setRawMode(true);
     return process.stdin.on('keypress', (str: string, key: key) => {
@@ -37,12 +21,4 @@ export function onKey(stream: Pushable){
             stream.push(str)
         }
     });
-}
-
-export async function awaitKeyPress(): Promise<{str: string, key: key}>{
-    return new Promise(resolve=>{
-        createOnKeyPress((str, key)=>{
-            resolve({str, key})
-        })
-    })
 }

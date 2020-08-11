@@ -1,8 +1,9 @@
 import { tamagotchi } from './tamagotchi'
 import { cli } from './cli'
 import { stream } from "./stream";
-import { onKey } from "./cli/keypress";
-import {time} from "./time";
+import { onKeyPressListener } from "./cli/keypress";
+import { time } from "./time";
+import { string } from "./string";
 
 const myTamagotchi = tamagotchi.newTamagotchi();
 
@@ -13,17 +14,14 @@ let day = 0;
 let name = "";
 
 void async function start() {
-
     cli.clearConsole();
+
     frame.print();
-
-    // await cli.awaitKeyPress();
-
     const q = new stream.Query(process.stdin, process.stdout);
     name = await q.question("");
 
     const keyInputStream = stream.createReadStream();
-    onKey(keyInputStream);
+    onKeyPressListener(keyInputStream);
 
     setInterval(()=>{
         const additionalDay = clock.incrementHour(6);
@@ -37,9 +35,6 @@ void async function start() {
     }
 
 }();
-
-// can inject like a date stamp and find out last time it was checked
-// pretty easy insert a timestamp and get second diff, make each second do a thing
 
 enum UserInputs {
     FEED = "f",
@@ -70,8 +65,8 @@ function draw(inputString: UserInputs){
     frame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
         `Day: ${day} | Time ${clock}`,
         `Life Cycle: ${myTamagotchi.getLifeCycle()} | Health: ${myTamagotchi.health.getValue()} | Weight: ${myTamagotchi.weight.getValue()}`,
-        `Happiness: ${myTamagotchi.happiness.getValue()}  | Hunger: ${myTamagotchi.hunger.getValue()}`,
-        `Sleepiness: ${myTamagotchi.sleepiness.getValue()} | Poop: ${myTamagotchi.poopLevel.getValue()}`,
+        `Happiness : ${string.doubleDigitFill(myTamagotchi.happiness.getValue())}  | Hunger: ${string.doubleDigitFill(myTamagotchi.hunger.getValue())}`,
+        `Sleepiness: ${string.doubleDigitFill(myTamagotchi.sleepiness.getValue())}  | Poop  : ${string.doubleDigitFill(myTamagotchi.poopLevel.getValue())}`,
         '',
         `Events`,
         '------',

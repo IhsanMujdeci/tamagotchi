@@ -14,9 +14,6 @@ interface Pooper {
     poop(): void
 }
 
-// maybe as time goes on we can decrement hunger, increment sleepiness,
-// depending on hunger level poop can
-
 export class Tamagotchi implements Feeder, Sleeper, Pooper{
 
     happiness: Statistic;
@@ -24,7 +21,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
     hunger: Statistic;
     poopLevel: Statistic;
     weight: Statistic;
-    health: Statistic
+    health: Statistic;
 
     readonly secondsPerTick = 5;
 
@@ -86,25 +83,16 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
 
         for(let i =0; i < ticksSinceLastCheck; i++){
 
+
+            if(this.tamagotchi.lifeCycle === LifeCycleEnum.DEAD){
+                return
+            }
+
             this.tamagotchi.age = this.tamagotchi.age + 2.5;
 
-            if(this.getAge() > 0){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.EGG
-            }
-            if(this.getAge() > 2.5){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.BABY
-            }
-            if(this.getAge() > 5){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.CHILD
-            }
-            if(this.getAge() > 12){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.TEENAGER
-            }
-            if(this.getAge() > 21){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.ADULT
-            }
             if(this.getAge() > 80){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.ADULT;
+                this.pushEvent("Your tamagotchi lived a full life span!");
+                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD;
                 return;
             }
 
@@ -126,6 +114,16 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
 
             }
 
+            if(this.hunger.isMax()){
+                this.health.decrement(2.5)
+            }
+            if(this.health.isMin()){
+                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD
+                this.pushEvent("Your tamagotchi died due to low health :'(")
+                return;
+            }
+
+
             if(this.hunger.getValue() < 5){
                 this.poopLevel.increment(2.5)
             } else {
@@ -146,6 +144,34 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper{
                     this.events.push("Your tamagotchi pooped its self :(")
                 }
             }
+            if(this.getAge() > 21){
+                if(this.tamagotchi.lifeCycle === LifeCycleEnum.ADULT){
+                    return
+                }
+                this.pushEvent("Your tamagotchi is a full grown ADULT, much wow OvO");
+                this.tamagotchi.lifeCycle = LifeCycleEnum.ADULT;
+            } else if(this.getAge() > 12){
+                if(this.tamagotchi.lifeCycle === LifeCycleEnum.TEENAGER){
+                    return
+                }
+                this.pushEvent("~~ Your tamagotchi is now a moody teenager ~~");
+                this.tamagotchi.lifeCycle = LifeCycleEnum.TEENAGER
+            } else if(this.getAge() > 5){
+                if(this.tamagotchi.lifeCycle === LifeCycleEnum.CHILD){
+                    return
+                }
+                this.pushEvent("Child phase... commense")
+                this.tamagotchi.lifeCycle = LifeCycleEnum.CHILD
+            } else if(this.getAge() >= 2.5){
+                if(this.tamagotchi.lifeCycle === LifeCycleEnum.BABY){
+                    return
+                }
+                this.pushEvent("Your egg hatched! yayy")
+                this.tamagotchi.lifeCycle = LifeCycleEnum.BABY
+            } else if(this.getAge() > 0){
+                this.tamagotchi.lifeCycle = LifeCycleEnum.EGG
+            }
+
             this.upadted()
         }
     }
