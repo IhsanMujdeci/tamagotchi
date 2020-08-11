@@ -4,16 +4,16 @@
   "description": "A simple starter for ts with node",
   "main": "index.js",
   "scripts": {
-    "test": "npm test",
-    "tsc": "tsc",
+    "test": "echo 'Not implimented yet'",
     "build": "tsc",
-    "start": "tsc --watch",
-    "init": "tsc -- --init"
+    "init": "tsc -- --init",
+    "start": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "author": "Ihsan aka, lvcid aka yung apriori",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^11.9.0",
+    "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^3.3.3"
   }
 }
