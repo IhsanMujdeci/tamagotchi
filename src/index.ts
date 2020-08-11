@@ -13,8 +13,7 @@ let name = "";
 void async function start() {
     cli.clearConsole();
 
-    const start = new cli.Start();
-    let startFrame = new cli.Frame("Tamagotchi", ['', start.render(), '']);
+    let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
     startFrame.print();
 
     const q = new stream.Query(process.stdin, process.stdout);
@@ -38,29 +37,22 @@ function setIntervalClock(keyInputStream: stream.Pushable) {
     }, 500);
 }
 
-enum UserInputs {
-    FEED = "f",
-    CLEAR = "c",
-    SlEEP = "b",
-    POOP = "p",
-}
-
-function userInputHandler(input: UserInputs) {
-    if(input === UserInputs.FEED){
+function userInputHandler(input: cli.UserInputs) {
+    if(input === cli.UserInputs.FEED){
         myTamagotchi.feed()
     }
-    if(input === UserInputs.CLEAR){
+    if(input === cli.UserInputs.CLEAR){
         myTamagotchi.clearEvents()
     }
-    if(input === UserInputs.SlEEP){
+    if(input === cli.UserInputs.SlEEP){
         myTamagotchi.sleep()
     }
-    if(input === UserInputs.POOP){
+    if(input === cli.UserInputs.POOP){
         myTamagotchi.poop()
     }
 }
 
-function draw(inputString: UserInputs){
+function draw(inputString: cli.UserInputs){
 
     userInputHandler(inputString);
     myTamagotchi.tick();
@@ -75,13 +67,7 @@ function draw(inputString: UserInputs){
         ...myTamagotchi.getEvents()
     ]);
     drawFrame.print();
-    logCommands();
+    cli.logCommands();
 
 }
 
-function logCommands(){
-    console.log('[f] to feed');
-    console.log('[b] to put to bed');
-    console.log('[p] prompt poop time');
-    console.log('[c] clear events');
-}
