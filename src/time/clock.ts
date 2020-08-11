@@ -1,4 +1,5 @@
 export class Clock{
+
     hour = 0;
     minute = 0;
     day = 0;
@@ -34,8 +35,8 @@ export class Clock{
     }
 
     toString(){
-        const displayHour = this.hour < 10 ? "0"+ this.hour : this.hour;
-        const displayMinute = this.minute < 10 ? "0"+ this.minute : this.minute;
-        return `Day: ${this.day} | Time ${displayHour}:${displayMinute}`
+        const displayHour = this.getHour() < 10 ? "0"+ this.getHour() : this.getHour();
+        const displayMinute = this.getMinute() < 10 ? "0"+ this.getMinute() : this.getMinute();
+        return `Day: ${this.getDay()} | Time ${displayHour}:${displayMinute}`
     }
 }
