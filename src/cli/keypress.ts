@@ -25,7 +25,11 @@ export function createOnKeyPress(callback?: KeypressCallback){
     });
 }
 
-export function onKey(stream: stream.Readable){
+interface Pushable {
+    push(chunk: any, encoding?: string): boolean;
+}
+
+export function onKey(stream: Pushable){
     // @ts-ignore
     process.stdin.setRawMode(true);
     return process.stdin.on('keypress', (str: string, key: key) => {

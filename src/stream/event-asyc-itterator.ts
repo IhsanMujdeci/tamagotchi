@@ -7,11 +7,6 @@ export function createReadStream(){
     });
 }
 
-async function loopReadStream(readable:stream.Readable, fn: any) {
-    for await (const chunk of readable) {
-        fn(chunk)
-    }
-}
 //
 // const inputStream = createReadStream();
 //
