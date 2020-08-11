@@ -1,9 +1,8 @@
 import { tamagotchi } from './tamagotchi'
 import { cli } from './cli'
-import { createReadStream } from "./stream/event-asyc-itterator";
+import { stream } from "./stream";
 import { onKey } from "./cli/keypress";
 import {time} from "./time";
-import {StreamQuery} from "./stream/streamquery";
 
 const myTamagotchi = tamagotchi.newTamagotchi();
 
@@ -20,10 +19,10 @@ void async function start() {
 
     await cli.awaitKeyPress();
 
-    const q = new StreamQuery(process.stdin, process.stdout);
+    const q = new stream.Query(process.stdin, process.stdout);
     name = await q.question("");
 
-    const keyInputStream = createReadStream();
+    const keyInputStream = stream.createReadStream();
     onKey(keyInputStream);
 
     setInterval(()=>{
@@ -42,39 +41,52 @@ void async function start() {
 // can inject like a date stamp and find out last time it was checked
 // pretty easy insert a timestamp and get second diff, make each second do a thing
 
-function draw(inputString: string = ""){
+enum UserInputs {
+    FEED = "f",
+    CLEAR = "c",
+    SlEEP = "b",
+    POOP = "p"
+}
 
-    // make thing to map character to function
-    if(inputString === "f"){
+function userInputHandler(input: UserInputs) {
+    if(input === UserInputs.FEED){
         myTamagotchi.feed()
     }
-    if(inputString === "c"){
+    if(input === UserInputs.CLEAR){
         myTamagotchi.clearEvents()
     }
-    if(inputString === "b"){
+    if(input === UserInputs.SlEEP){
         myTamagotchi.sleep()
     }
-    if(inputString === "p"){
+    if(input === UserInputs.POOP){
         myTamagotchi.poop()
     }
-    myTamagotchi.tick();
+}
 
+function draw(inputString: UserInputs){
+
+    // make thing to map character to function
+    userInputHandler(inputString);
+    myTamagotchi.tick();
     frame = new cli.Frame(`Tamagotchi ${name} | Age ${myTamagotchi.getAge()}`, [
         `Day: ${day} | Time ${clock}`,
         `Life Cycle: ${myTamagotchi.getLifeCycle()}`,
         `Health: ${myTamagotchi.health.getValue()}`,
         `Happiness: ${myTamagotchi.happiness.getValue()} | Weight: ${myTamagotchi.weight.getValue()} | Hunger ${myTamagotchi.hunger.getValue()} | Sleepiness ${myTamagotchi.sleepiness.getValue()} | Poop ${myTamagotchi.poopLevel.getValue()}`,
-        `Status: Happy`,
         '',
         `Events`,
         '------',
         ...myTamagotchi.getEvents()
     ]);
     frame.print();
+    logCommands();
+    console.log(myTamagotchi.tick());
+
+}
+
+function logCommands(){
     console.log('[f] to feed');
     console.log('[b] to put to bed');
     console.log('[p] prompt poop time');
     console.log('[c] clear events');
-    console.log(myTamagotchi.tick());
-
 }

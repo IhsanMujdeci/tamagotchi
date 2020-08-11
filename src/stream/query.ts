@@ -4,7 +4,7 @@ interface StreamQueryer {
     question(query: string): Promise<string>
 }
 
-export class StreamQuery implements StreamQueryer{
+export class Query implements StreamQueryer{
 
     readLine: readLine.Interface;
 
