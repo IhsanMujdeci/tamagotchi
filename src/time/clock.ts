@@ -1,4 +1,4 @@
-import {string} from "@tamagotchi/string";
+import {string} from "@kit/string";
 
 export class Clock{
 
