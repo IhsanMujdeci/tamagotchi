@@ -1,13 +1,15 @@
-import { tamagotchi } from '@tamagotchi/tamagotchi'
-import { cli } from '@tamagotchi/cli'
-import { stream } from "@tamagotchi/stream";
-import { time } from "@tamagotchi/time";
+import { tamagotchi } from './tamagotchi'
+import { cli } from './cli'
+import { stream } from "./stream";
+import { time } from "./time";
 import { string } from "@kit/string";
 
 const myTamagotchi = tamagotchi.createTamagotchi();
 let clock = new time.Clock();
 
+
 async function start() {
+    console.log('starting')
     cli.clearConsole();
 
     let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
