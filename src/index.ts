@@ -7,9 +7,7 @@ import { string } from "@kit/string";
 const myTamagotchi = tamagotchi.createTamagotchi();
 let clock = new time.Clock();
 
-
 async function start() {
-    console.log('starting')
     cli.clearConsole();
 
     let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
