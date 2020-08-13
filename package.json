@@ -1,14 +1,14 @@
 {
-  "name": "node-ts",
+  "name": "tamagotchi",
   "version": "1.0.0",
-  "description": "A simple starter for ts with node",
+  "description": "Tamagotchi in your console",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts"
   },
-  "author": "Ihsan aka, lvcid aka yung apriori",
+  "author": "Ihsan Mujdeci",
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^26.0.9",
@@ -16,6 +16,7 @@
     "cli-block": "^1.1.7",
     "jest": "^26.3.0",
     "ts-jest": "^26.1.4",
+    "ts-mockito": "^2.6.1",
     "ts-node-dev": "^1.0.0-pre.56",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.3.3"

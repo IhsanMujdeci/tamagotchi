@@ -5,9 +5,27 @@ export enum UserInputs {
     POOP = "p",
 }
 
-export function logCommands(){
-    console.log('[f] to feed');
-    console.log('[b] to put to bed');
-    console.log('[p] prompt poop time');
-    console.log('[c] clear events');
+export class Command{
+    constructor(
+        private key: string,
+        private description: string
+    ) {
+    }
+
+    toString(){
+        return `[${this.key}] ${this.description}`
+    }
+}
+
+export class Commands{
+    private commands: Command[];
+    constructor(...commands: Command[]) {
+        this.commands = commands
+    }
+
+    log(){
+        for(const c of this.commands){
+            console.log(c.toString())
+        }
+    }
 }

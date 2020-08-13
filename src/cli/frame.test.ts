@@ -1,0 +1,40 @@
+import {Frame} from "@tamagotchi/cli/frame";
+import assert = require("assert");
+
+describe("Frame base class", ()=>{
+
+    it("Should log", ()=>{
+        const title = 'Hello';
+        const lines = ['world'];
+        const consoleSpy = jest.spyOn(console, 'log');
+
+        const f = new Frame(title, lines);
+        f.print();
+
+        // prints every two lines
+        assert(consoleSpy.mock.calls[0][0].includes(title));
+        for(let l in lines){
+            const n = parseInt(l);
+            assert(consoleSpy.mock.calls[n+2][0].includes(lines[n]))
+        }
+
+    })
+
+    it("Should log for many lines", ()=>{
+        const title = 'Hello';
+        const lines = ['world', 'im', 'here'];
+        const consoleSpy = jest.spyOn(console, 'log');
+
+        const f = new Frame(title, lines);
+        f.print();
+
+        // prints every two lines
+        assert(consoleSpy.mock.calls[0][0].includes(title));
+        for(let l in lines){
+            const n = parseInt(l);
+            assert(consoleSpy.mock.calls[n+2][0].includes(lines[n]))
+        }
+
+    })
+
+});

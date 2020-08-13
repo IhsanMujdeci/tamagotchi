@@ -14,7 +14,11 @@ interface Pooper {
     poop(): void
 }
 
-export class Tamagotchi implements Feeder, Sleeper, Pooper{
+interface LogClearer {
+    clearEvents(): void
+}
+
+export class Tamagotchi implements Feeder, Sleeper, Pooper, LogClearer{
 
     happiness: Statistic;
     sleepiness: Statistic;

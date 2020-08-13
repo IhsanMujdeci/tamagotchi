@@ -1,14 +1,15 @@
 import { tamagotchi } from './tamagotchi'
 import { cli } from './cli'
-import { stream } from "./stream";
+import { stream } from "./kit/stream";
 import { time } from "./time";
 import { string } from "@kit/string";
 
 const myTamagotchi = tamagotchi.createTamagotchi();
 let clock = new time.Clock();
+let Console: cli.Consoler = console;
 
 async function start() {
-    cli.clearConsole();
+    Console.clear();
 
     let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
     startFrame.print();
@@ -18,11 +19,13 @@ async function start() {
 
     const keyInputStream = stream.createReadStream();
 
-    cli.onKeyPressListener(keyInputStream);
+    //@ts-ignore
+    process.stdin.setRawMode(true);
+    cli.onKeyPressListener(keyInputStream, process.stdin);
     setIntervalClock(keyInputStream);
 
     for await (const chunk of keyInputStream) {
-        cli.clearConsole();
+        Console.clear();
         draw(chunk.toString())
     }
 }
@@ -54,7 +57,15 @@ function draw(inputString: cli.UserInputs){
         ]
     );
     drawFrame.print();
-    cli.logCommands();
+
+
+    const feedCommand = new cli.Command('f','to feed');
+    const bedCommand = new cli.Command('b','to put to bed');
+    const poopCommand = new cli.Command('p','prompt poop time');
+    const clearCommand = new cli.Command('c','clear events');
+
+    const commands = new cli.Commands(feedCommand, bedCommand, poopCommand, clearCommand);
+    commands.log();
 
 }
 
