@@ -5,6 +5,8 @@ import { time } from "./time";
 import { string } from "@kit/string";
 
 const myTamagotchi = tamagotchi.createTamagotchi();
+const gameTicker = new tamagotchi.Tick();
+
 let clock = new time.Clock();
 let Console: cli.Consoler = console;
 
@@ -42,7 +44,8 @@ function setIntervalClock(keyInputStream: stream.Pushable) {
 function draw(inputString: cli.UserInputs){
 
     userInputHandler(inputString);
-    myTamagotchi.tick();
+    gameTicker.tick(myTamagotchi);
+
     const drawFrame = new cli.Frame(
         `Tamagotchi ${myTamagotchi.getName()} | Age ${myTamagotchi.getAge()}`,
         [
@@ -58,15 +61,16 @@ function draw(inputString: cli.UserInputs){
     );
     drawFrame.print();
 
+    logCommands();
+}
 
+function logCommands(){
     const feedCommand = new cli.Command('f','to feed');
     const bedCommand = new cli.Command('b','to put to bed');
     const poopCommand = new cli.Command('p','prompt poop time');
     const clearCommand = new cli.Command('c','clear events');
-
     const commands = new cli.Commands(feedCommand, bedCommand, poopCommand, clearCommand);
     commands.log();
-
 }
 
 function userInputHandler(input: cli.UserInputs) {

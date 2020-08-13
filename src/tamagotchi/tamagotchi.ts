@@ -1,7 +1,7 @@
 import {Model} from "./model";
 import {Statistic} from "./statistic";
 import {LifeCycleEnum} from "./lifecycle";
-
+import {Tick} from './tick'
 interface Feeder {
     feed(): void
 }
@@ -27,11 +27,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper, LogClearer{
     weight: Statistic;
     health: Statistic;
 
-    readonly secondsPerTick = 5;
-
-    private needsPoopTicker = 0;
-    private needsSleepTicker = 0;
-
+    private ticker: Tick;
     private events: string[] = [];
 
     constructor(
@@ -43,6 +39,7 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper, LogClearer{
         this.poopLevel = new Statistic(tamagotchi.poop);
         this.weight = new Statistic(tamagotchi.weight);
         this.health = new Statistic(tamagotchi.health)
+        this.ticker = new Tick();
     }
 
     feed(){
@@ -80,108 +77,19 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper, LogClearer{
         }
     }
 
-    getAge(){
+    getAge() {
         return this.tamagotchi.age
     }
 
-    ticksSinceLastCheck(){
-        const secondsSinceCheck = Math.floor((Date.now() - this.tamagotchi.lastUpdated.getTime()) / 1000);
-        return Math.floor(secondsSinceCheck / this.secondsPerTick);
+    getLastUpdated(){
+        return this.tamagotchi.lastUpdated
     }
 
-    tick(){
-        const ticksSinceLastCheck = this.ticksSinceLastCheck();
-
-        for(let i =0; i < ticksSinceLastCheck; i++){
-            this.upadted();
-
-            if(this.tamagotchi.lifeCycle === LifeCycleEnum.DEAD){
-                return
-            }
-
-            this.tamagotchi.age = this.tamagotchi.age + 2.5;
-
-            if(this.getAge() > 80){
-                this.pushEvent("Your tamagotchi lived a full life span!");
-                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD;
-                return;
-            }
-
-            this.sleepiness.increment(3);
-            if(this.sleepiness.isMax()){
-                this.needsSleepTicker = this.needsSleepTicker + 1;
-
-                if(this.needsSleepTicker > 3){
-                    this.happiness.decrement(1);
-                    this.sleepiness.reset();
-                    this.pushEvent("Your tamagotchi slept by its self")
-                }
-            }
-
-            this.hunger.increment(2.5);
-            if(this.hunger.isMax()){
-                this.health.decrement(2.5)
-            } else if(this.hunger.getValue() < 5){
-                this.health.increment();
-                this.happiness.increment(1)
-                this.poopLevel.increment(2.5)
-            } else {
-                this.poopLevel.increment(1.5)
-            }
-
-            if(this.hunger.getValue() > 7){
-                this.health.decrement(0.5);
-                this.weight.decrement(1);
-                this.happiness.decrement(2)
-            }
-
-            if(this.poopLevel.isMax()){
-                this.needsPoopTicker = this.needsPoopTicker + 1;
-
-                if(this.needsPoopTicker > 3){
-                    this.happiness.decrement(2);
-                    this.poopLevel.reset();
-                    this.events.push("Your tamagotchi pooped its self :(")
-                }
-            }
-
-            if(this.health.isMin()){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.DEAD;
-                this.pushEvent("Your tamagotchi died due to low health :'(");
-                return;
-            }else if(this.getAge() > 21){
-                if(this.tamagotchi.lifeCycle === LifeCycleEnum.ADULT){
-                    return
-                }
-                this.pushEvent("Your tamagotchi is a full grown ADULT, much wow OvO");
-                this.tamagotchi.lifeCycle = LifeCycleEnum.ADULT;
-            } else if(this.getAge() > 12){
-                if(this.tamagotchi.lifeCycle === LifeCycleEnum.TEENAGER){
-                    return
-                }
-                this.pushEvent("~~ Your tamagotchi is now a moody teenager ~~");
-                this.tamagotchi.lifeCycle = LifeCycleEnum.TEENAGER
-            } else if(this.getAge() > 5){
-                if(this.tamagotchi.lifeCycle === LifeCycleEnum.CHILD){
-                    return
-                }
-                this.pushEvent("Child phase... commense")
-                this.tamagotchi.lifeCycle = LifeCycleEnum.CHILD
-            } else if(this.getAge() >= 2.5){
-                if(this.tamagotchi.lifeCycle === LifeCycleEnum.BABY){
-                    return
-                }
-                this.pushEvent("Your egg hatched! yayy")
-                this.tamagotchi.lifeCycle = LifeCycleEnum.BABY
-            } else if(this.getAge() > 0){
-                this.tamagotchi.lifeCycle = LifeCycleEnum.EGG
-            }
-
-
-        }
+    setAge(age: number){
+        this.tamagotchi.age = age
     }
 
-    upadted(){
+    update(){
         this.tamagotchi.lastUpdated = new Date();
     }
 
@@ -199,6 +107,14 @@ export class Tamagotchi implements Feeder, Sleeper, Pooper, LogClearer{
 
     clearEvents(){
         this.events = [];
+    }
+
+    setLifeCycle(lifeCycle: LifeCycleEnum){
+        this.tamagotchi.lifeCycle = lifeCycle
+    }
+
+    isLifeCycle(lifeCycle: LifeCycleEnum){
+        return this.tamagotchi.lifeCycle === lifeCycle
     }
 
 }
