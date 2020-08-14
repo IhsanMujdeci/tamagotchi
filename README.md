@@ -8,7 +8,7 @@ It takes a keen eye especially early in a 'gotchis life to keep them healthy!
 ## Technical features
 - Interactive ui
 - Real time passes by in terminal
-- Testing framework setup
+- Testing framework setup with many tests written
 - CI setup on github actions with building and testing of code
 
 ## How to use
@@ -29,7 +29,6 @@ To start again simply `ctrl+c` to exit terminal and run the application again
 ## Commands
 
 ### npm start
-Dev mode <br>
 Starts and watches the project for changes and compiles ts and restarts process
 
 ### npm run test
