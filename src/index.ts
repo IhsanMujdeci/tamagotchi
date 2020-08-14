@@ -24,7 +24,7 @@ async function start() {
     const keyInputStream = stream.createReadStream();
 
     cli.onKeyPressListener(keyInputStream, process.stdin);
-    setIntervalClock(keyInputStream, clock);
+    onTimePassedListener(keyInputStream, clock);
 
     for await (const chunk of keyInputStream) {
         Console.clear();
@@ -39,7 +39,7 @@ async function start() {
 start();
 
 
-function setIntervalClock(
+function onTimePassedListener(
     keyInputStream: stream.Pushable,
     clock: time.ClockSetter
 ) {
