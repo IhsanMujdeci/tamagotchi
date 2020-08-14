@@ -110,7 +110,7 @@ export class Tick implements Tick{
             if (this.needsPoopTicker > 3) {
                 tamagotchi.happiness.decrement(2);
                 tamagotchi.poopLevel.reset();
-                tamagotchi.pushEvent("Your tamagotchi pooped its self :(")
+                tamagotchi.pushEvent("Your tamagotchi pooped its self :O, doesn't look good :|")
             }
         }
     }
