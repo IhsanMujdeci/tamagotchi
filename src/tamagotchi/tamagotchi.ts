@@ -1,6 +1,6 @@
-import {Model} from "./model";
-import {Statistic} from "./statistic";
-import {LifeCycleEnum} from "./lifecycle";
+import { Model } from "./model";
+import { Statistic } from "./statistic";
+import { LifeCycleEnum } from "./lifecycle";
 
 export interface UserInterfacer {
     feed(): void,

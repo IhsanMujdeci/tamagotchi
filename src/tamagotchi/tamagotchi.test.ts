@@ -1,4 +1,5 @@
 import {createTamagotchi, TamagotchiErrors} from "@tamagotchi/tamagotchi/tamagotchi";
+import {LifeCycleEnum} from "@tamagotchi/tamagotchi/lifecycle";
 
 function promiseWait(time: number){
     return new Promise((resolve, reject)=>{
@@ -25,7 +26,7 @@ describe("Tamagotchi test", ()=>{
             const happiness = t.happiness.getValue()
 
             t.hunger.reset();
-            t.feed()
+            t.feed();
 
             expect(t.hunger.getValue()).toEqual(0)
             expect(t.hunger.getValue()).not.toEqual(hunger)
@@ -143,6 +144,26 @@ describe("Tamagotchi test", ()=>{
     });
 
    describe('Lifecycle', ()=>{
+
+       it('Should have base lifecycle', ()=>{
+           const t = createTamagotchi();
+           expect(t.getLifeCycle()).toEqual(LifeCycleEnum.EGG)
+       });
+
+       it('Should assert wrong lifecycle', ()=>{
+           const t = createTamagotchi();
+           const newLifeCycle = LifeCycleEnum.TEENAGER;
+           expect(t.getLifeCycle()).not.toEqual(newLifeCycle)
+           expect(t.isLifeCycle(newLifeCycle)).toEqual(false)
+       });
+
+       it('Should set and assert lifecycle', ()=>{
+           const t = createTamagotchi();
+           const newLifeCycle = LifeCycleEnum.TEENAGER;
+           t.setLifeCycle(newLifeCycle)
+           expect(t.getLifeCycle()).toEqual(newLifeCycle)
+           expect(t.isLifeCycle(newLifeCycle)).toEqual(true)
+       })
 
    })
 });
