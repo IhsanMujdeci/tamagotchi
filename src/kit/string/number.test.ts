@@ -1,4 +1,4 @@
-import {doubleDigitFill} from "./number";
+import {doubleDigitFill, DoubleDigitFillError} from "./number";
 
 describe("Test string numbers", ()=>{
 
@@ -16,6 +16,22 @@ describe("Test string numbers", ()=>{
 
     it("Should do nothing to big number", ()=>{
         expect(doubleDigitFill(99)).toEqual("99")
+    });
+
+    it('Should throw due to number being too low', ()=>{
+        expect(()=>doubleDigitFill(-1)).toThrow(DoubleDigitFillError.TO_LOW)
+    });
+
+    it('Should throw due to number being too high', ()=>{
+        expect(()=>doubleDigitFill(100)).toThrow(DoubleDigitFillError.TO_HIGH)
+    });
+
+    it('Should throw due to number being too way too low', ()=>{
+        expect(()=>doubleDigitFill(-10*100)).toThrow(DoubleDigitFillError.TO_LOW)
+    });
+
+    it('Should throw due to number being too way too high', ()=>{
+        expect(()=>doubleDigitFill(10*100)).toThrow(DoubleDigitFillError.TO_HIGH)
     })
 
 });
