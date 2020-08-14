@@ -13,7 +13,7 @@ describe("CLI user inputs", ()=>{
         const repeat = new Command('r', 'is repeating test')
 
         const commands = new Commands(test, repeat);
-        const consoleSpy = jest.spyOn(console, 'log');
+        const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
         commands.log();
 
