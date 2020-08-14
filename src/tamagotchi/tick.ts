@@ -31,7 +31,7 @@ export class Tick implements Tick{
             this.incrementLife(tamagotchi);
 
             if (tamagotchi.getAge() > 80) {
-                tamagotchi.pushEvent("Your tamagotchi lived a full life span!");
+                tamagotchi.pushEvent("WOW CONGRATULATIONS!! Your tamagotchi lived a full life span!");
                 tamagotchi.setLifeCycle(LifeCycleEnum.DEAD);
                 return;
             }
