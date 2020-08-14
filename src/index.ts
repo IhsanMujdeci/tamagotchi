@@ -4,16 +4,18 @@ import { stream } from "./kit/stream";
 import { time } from "./time";
 import { string } from "@kit/string";
 
-const myTamagotchi = tamagotchi.createTamagotchi();
-const gameTicker = new tamagotchi.Tick();
-
-let clock = new time.Clock();
-let Console: cli.Consoler = console;
-
 async function start() {
+    const myTamagotchi = tamagotchi.createTamagotchi();
+    const gameTicker = new tamagotchi.Tick();
+    const Console: cli.Consoler = console;
+    const clock = new time.Clock();
+
     Console.clear();
 
-    let startFrame = new cli.Frame("Tamagotchi", ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']);
+    let startFrame = new cli.Frame(
+        "Tamagotchi",
+        ['', "Welcome to tamagotchi, enter in your tamagotchi's name!", '']
+    );
     startFrame.print();
 
     const q = new stream.Query(process.stdin, process.stdout);
@@ -21,29 +23,40 @@ async function start() {
 
     const keyInputStream = stream.createReadStream();
 
-    //@ts-ignore
-    process.stdin.setRawMode(true);
     cli.onKeyPressListener(keyInputStream, process.stdin);
-    setIntervalClock(keyInputStream);
+    setIntervalClock(keyInputStream, clock);
 
     for await (const chunk of keyInputStream) {
         Console.clear();
-        draw(chunk.toString())
+        draw(
+            chunk.toString(),
+            myTamagotchi,
+            gameTicker,
+            clock
+        )
     }
 }
 start();
 
 
-function setIntervalClock(keyInputStream: stream.Pushable) {
+function setIntervalClock(
+    keyInputStream: stream.Pushable,
+    clock: time.ClockSetter
+) {
+    const halfASecondMs = 500;
     setInterval(()=>{
         clock.incrementHour(6);
         keyInputStream.push(Buffer.from("blank"));
-    }, 500);
+    }, halfASecondMs);
 }
 
-function draw(inputString: cli.UserInputs){
-
-    userInputHandler(inputString);
+function draw(
+    inputString: cli.UserInputs,
+    myTamagotchi: tamagotchi.Tamagotchi,
+    gameTicker: tamagotchi.Ticker,
+    clock: string.Stringer
+){
+    userInputHandler(inputString, myTamagotchi);
     gameTicker.tick(myTamagotchi);
 
     const drawFrame = new cli.Frame(
@@ -60,7 +73,6 @@ function draw(inputString: cli.UserInputs){
         ]
     );
     drawFrame.print();
-
     logCommands();
 }
 
@@ -73,7 +85,10 @@ function logCommands(){
     commands.log();
 }
 
-function userInputHandler(input: cli.UserInputs) {
+function userInputHandler(
+    input: cli.UserInputs,
+    myTamagotchi: tamagotchi.UserInterfacer
+) {
     if(input === cli.UserInputs.FEED){
         myTamagotchi.feed()
     }

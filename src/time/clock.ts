@@ -1,12 +1,15 @@
 import {string} from "@kit/string";
 
-export class Clock{
+export interface ClockSetter {
+    incrementHour(number: number): void
+}
+
+export class Clock implements ClockSetter{
 
     hour = 0;
     minute = 0;
     day = 0;
 
-    // returns number of days past for minute increment
     incrementMinute(inc: number) {
         let newMin = this.minute + inc;
         const additionalHours =  Math.floor(newMin / 60);
@@ -15,7 +18,6 @@ export class Clock{
         this.incrementHour(additionalHours)
     }
 
-    // returns number of days past for hour increment
     incrementHour(inc: number){
         let newHour = this.hour + inc;
         const additionalDays =  Math.floor( newHour/ 24);
