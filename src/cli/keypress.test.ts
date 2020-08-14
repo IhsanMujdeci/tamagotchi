@@ -1,5 +1,5 @@
 import {instance, mock, verify} from 'ts-mockito'
-import {onKeyPressListener} from './keypress'
+import {onKeyPressListener, keyPress} from './keypress'
 import {createReadStream} from "@kit/stream/readstream";
 import {stream} from "@kit/stream";
 
@@ -17,5 +17,16 @@ describe('Key Press', ()=>{
 
         verify(pushStreamMock.push(key)).called();
     })
-    
+
+    it("should press key",()=>{
+        const pusher: stream.Pushable = {push : jest.fn()};
+        keyPress(pusher)("hello")
+        expect(pusher.push).toBeCalledWith("hello")
+    })
+
+    it("should press keys",()=>{
+        const pusher: stream.Pushable = {push : jest.fn()};
+        keyPress(pusher)("")
+    })
+
 });

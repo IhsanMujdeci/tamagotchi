@@ -1,5 +1,6 @@
-import {createTamagotchi, TamagotchiErrors} from "@tamagotchi/tamagotchi/tamagotchi";
+import {createTamagotchi, Tamagotchi, TamagotchiErrors} from "@tamagotchi/tamagotchi/tamagotchi";
 import {LifeCycleEnum} from "@tamagotchi/tamagotchi/lifecycle";
+import {Statistic} from "@tamagotchi/tamagotchi/statistic";
 
 function promiseWait(time: number){
     return new Promise((resolve, reject)=>{
@@ -166,4 +167,45 @@ describe("Tamagotchi test", ()=>{
        })
 
    })
+
+    describe('Sleep', ()=>{
+
+        it('Should fall asleep with command', ()=>{
+            const t = createTamagotchi();
+            t.sleepiness.increment(Statistic.max);
+            t.happiness.reset();
+            t.sleep();
+            expect(t.sleepiness.getValue()).toEqual(0);
+            expect(t.getEvents().length).toEqual(1);
+            expect(t.happiness.getValue()).toEqual(5)
+        })
+
+        it('Should not fall asleep with command', ()=>{
+            const t = createTamagotchi();
+            t.sleepiness.reset();
+            t.sleep();
+            expect(t.getEvents().length).toEqual(1);
+        })
+
+    })
+
+    describe('Poop', ()=>{
+        it('Should fall poop with command', ()=>{
+            const t = createTamagotchi();
+            const origHappiness = t.happiness.getValue()
+            t.poopLevel.increment(Statistic.max);
+
+            t.poop();
+            expect(t.happiness.getValue()).toEqual(origHappiness+1);
+            expect(t.getEvents().length).toEqual(1);
+            expect(t.poopLevel.getValue()).toEqual(0)
+        })
+
+        it('Should not poop asleep with command', ()=>{
+            const t = createTamagotchi();
+            t.poopLevel.reset();
+            t.poop();
+            expect(t.getEvents().length).toEqual(1);
+        })
+    })
 });

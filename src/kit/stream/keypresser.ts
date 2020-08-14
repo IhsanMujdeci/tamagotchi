@@ -1,4 +1,4 @@
-type key = {
+export type key = {
     sequence: string,
     name: string,
     ctrl: boolean,

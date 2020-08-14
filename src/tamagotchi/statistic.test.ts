@@ -8,6 +8,10 @@ describe("Tamagotchi Statistics", ()=>{
         expect(s.getValue()).toEqual(value)
     })
 
+    it('Should create statistic with no args',()=>{
+        expect(new Statistic().getValue()).toEqual(5)
+    })
+
     it("Should create a increment stat", ()=>{
         const value = 1;
         const s =  new Statistic(value);
@@ -42,6 +46,18 @@ describe("Tamagotchi Statistics", ()=>{
 
     it("Should not init number too low", ()=>{
         expect(()=>new Statistic(Statistic.min - 1)).toThrow(StatisticErrors.TO_LOW)
+    })
+
+    it("Should try increment over max and be limited", ()=>{
+        const s =  new Statistic(Statistic.max-1);
+        s.increment(2);
+        expect(s.getValue()).toEqual(Statistic.max)
+    })
+
+    it("Should try increment under min and be limited", ()=>{
+        const s =  new Statistic(Statistic.min+1);
+        s.decrement(2);
+        expect(s.getValue()).toEqual(Statistic.min)
     })
 
 });

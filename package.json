@@ -4,7 +4,7 @@
   "description": "Tamagotchi in your console",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --reporter=html --coverage",
     "build": "tsc",
     "start": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts"
   },
