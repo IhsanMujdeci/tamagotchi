@@ -98,7 +98,7 @@ export class Tick implements Tick{
             if (this.needsSleepTicker > 3) {
                 tamagotchi.happiness.decrement(1);
                 tamagotchi.sleepiness.reset();
-                tamagotchi.pushEvent("Your tamagotchi slept by its self")
+                tamagotchi.pushEvent("Nobody tucked it in :'( , your tamagotchi slept by its self ...how lonely")
             }
         }
     }
