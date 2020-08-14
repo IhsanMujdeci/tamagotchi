@@ -8,7 +8,8 @@ It takes a keen eye especially early in a 'gotchis life to keep them healthy!
 ## Technical features
 - Interactive ui
 - Real time passes by in terminal
-- Testing framework setup with many tests written
+- 100% test coverage on packages
+- Test coverage generated are ready to be hosted
 - CI setup on github actions with building and testing of code
 
 ## How to use
