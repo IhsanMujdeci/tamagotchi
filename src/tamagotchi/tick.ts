@@ -11,7 +11,7 @@ export enum TickEvents {
     ADULT="Your tamagotchi is a full grown ADULT, much wow OvO",
     TEEN="~~ Your tamagotchi is now a moody teenager ~~",
     CHILD="Child phase... commense",
-    HATCH="Your egg hatched! yayy",
+    BABY_HATCHED="Your egg hatched! yayy",
     SLEEP_SELF="Nobody tucked it in :'( , your tamagotchi slept by its self ...how lonely",
     POOP_SELF="Your tamagotchi pooped its self :O, doesn't look good :|"
 }
@@ -57,7 +57,7 @@ export class Tick implements Tick{
 
     naturalDeath(tamagotchi: Tamagotchi){
         if (tamagotchi.getAge() > 80) {
-            tamagotchi.pushEvent("WOW CONGRATULATIONS!! Your tamagotchi lived a full life span!");
+            tamagotchi.pushEvent(TickEvents.NATURAL_DEATH);
             tamagotchi.setLifeCycle(LifeCycleEnum.DEAD);
             return true;
         }
@@ -67,14 +67,14 @@ export class Tick implements Tick{
     lifeCycles(tamagotchi: Tamagotchi){
         if (tamagotchi.health.isMin()) {
             tamagotchi.setLifeCycle(LifeCycleEnum.DEAD);
-            tamagotchi.pushEvent("Your tamagotchi died due to low health :'(");
+            tamagotchi.pushEvent(TickEvents.LOw_HEALTH_DEATH);
             return;
         }
         if (tamagotchi.getAge() > 21) {
             if (tamagotchi.isLifeCycle(LifeCycleEnum.ADULT)) {
                 return
             }
-            tamagotchi.pushEvent("Your tamagotchi is a full grown ADULT, much wow OvO");
+            tamagotchi.pushEvent(TickEvents.ADULT);
             tamagotchi.setLifeCycle(LifeCycleEnum.ADULT);
             return
         }
@@ -82,7 +82,7 @@ export class Tick implements Tick{
             if (tamagotchi.isLifeCycle(LifeCycleEnum.TEENAGER)) {
                 return
             }
-            tamagotchi.pushEvent("~~ Your tamagotchi is now a moody teenager ~~");
+            tamagotchi.pushEvent(TickEvents.TEEN);
             tamagotchi.setLifeCycle(LifeCycleEnum.TEENAGER);
             return;
         }
@@ -90,7 +90,7 @@ export class Tick implements Tick{
             if (tamagotchi.isLifeCycle(LifeCycleEnum.CHILD)) {
                 return
             }
-            tamagotchi.pushEvent("Child phase... commense");
+            tamagotchi.pushEvent(TickEvents.CHILD);
             tamagotchi.setLifeCycle(LifeCycleEnum.CHILD);
             return;
         }
@@ -98,7 +98,7 @@ export class Tick implements Tick{
             if (tamagotchi.isLifeCycle(LifeCycleEnum.BABY)) {
                 return
             }
-            tamagotchi.pushEvent("Your egg hatched! yayy");
+            tamagotchi.pushEvent(TickEvents.BABY_HATCHED);
             tamagotchi.setLifeCycle(LifeCycleEnum.BABY);
             return
         }
@@ -119,7 +119,7 @@ export class Tick implements Tick{
             if (this.needsSleepTicker > 3) {
                 tamagotchi.happiness.decrement(1);
                 tamagotchi.sleepiness.reset();
-                tamagotchi.pushEvent("Nobody tucked it in :'( , your tamagotchi slept by its self ...how lonely")
+                tamagotchi.pushEvent(TickEvents.SLEEP_SELF)
             }
         }
     }
@@ -131,7 +131,7 @@ export class Tick implements Tick{
             if (this.needsPoopTicker > 3) {
                 tamagotchi.happiness.decrement(2);
                 tamagotchi.poopLevel.reset();
-                tamagotchi.pushEvent("Your tamagotchi pooped its self :O, doesn't look good :|")
+                tamagotchi.pushEvent(TickEvents.POOP_SELF)
             }
         }
     }
