@@ -7,7 +7,6 @@ export function onKeyPressListener(stream: stream.Pushable, keyPressStream: stre
 export function keyPress(stream: stream.Pushable){
     return function(str: string, key?: stream.key)  {
         if(str){
-            console.log('hello')
             stream.push(str)
         }
     }

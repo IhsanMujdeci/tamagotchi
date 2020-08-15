@@ -1,11 +1,15 @@
 import * as stream from "stream";
 
-export function createReadStream(opts?:{read(size: number): void}){
+type StreamRead = (size: number) => void;
+
+export function createReadStream(opts?:{read: StreamRead}){
     return new stream.Readable({
         read(size:number) {
-            if(opts?.read){
-                opts.read(size)
-            }
+            useReadIfExists(size, opts)
         }
     });
+}
+
+export function useReadIfExists(size: number, opts?: {read: StreamRead}){
+    opts?.read(size);
 }
