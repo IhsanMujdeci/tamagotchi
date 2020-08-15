@@ -85,8 +85,8 @@ export class Tamagotchi implements UserInterfacer{
         return this.tamagotchi.lastUpdated
     }
 
-    update(){
-        this.tamagotchi.lastUpdated = new Date();
+    update(d: Date = new Date()){
+        this.tamagotchi.lastUpdated = d
     }
 
     getLifeCycle(){

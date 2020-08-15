@@ -5,13 +5,28 @@ export interface Ticker {
     tick(tamagotchi: Tamagotchi): void
 }
 
+export enum TickEvents {
+    NATURAL_DEATH="WOW CONGRATULATIONS!! Your tamagotchi lived a full life span!",
+    LOw_HEALTH_DEATH="Your tamagotchi died due to low health :'(",
+    ADULT="Your tamagotchi is a full grown ADULT, much wow OvO",
+    TEEN="~~ Your tamagotchi is now a moody teenager ~~",
+    CHILD="Child phase... commense",
+    HATCH="Your egg hatched! yayy",
+    SLEEP_SELF="Nobody tucked it in :'( , your tamagotchi slept by its self ...how lonely",
+    POOP_SELF="Your tamagotchi pooped its self :O, doesn't look good :|"
+}
+
 export class Tick implements Tick{
 
-    readonly secondsPerTick = 5;
+    private readonly secondsPerTick = 5;
     private needsPoopTicker = 0;
     private needsSleepTicker = 0;
 
     constructor() {
+    }
+
+    getSecondsPerTick(){
+        return this.secondsPerTick
     }
 
     ticksSinceLastCheck(lastUpdated: Date) {
@@ -27,13 +42,10 @@ export class Tick implements Tick{
             if (tamagotchi.isLifeCycle(LifeCycleEnum.DEAD)) {
                 return
             }
-
             this.incrementLife(tamagotchi);
 
-            if (tamagotchi.getAge() > 80) {
-                tamagotchi.pushEvent("WOW CONGRATULATIONS!! Your tamagotchi lived a full life span!");
-                tamagotchi.setLifeCycle(LifeCycleEnum.DEAD);
-                return;
+            if(this.naturalDeath(tamagotchi)){
+                return
             }
 
             this.sleepiness(tamagotchi);
@@ -41,6 +53,15 @@ export class Tick implements Tick{
             this.poopLevelMax(tamagotchi);
             this.lifeCycles(tamagotchi)
         }
+    }
+
+    naturalDeath(tamagotchi: Tamagotchi){
+        if (tamagotchi.getAge() > 80) {
+            tamagotchi.pushEvent("WOW CONGRATULATIONS!! Your tamagotchi lived a full life span!");
+            tamagotchi.setLifeCycle(LifeCycleEnum.DEAD);
+            return true;
+        }
+        return false
     }
 
     lifeCycles(tamagotchi: Tamagotchi){
