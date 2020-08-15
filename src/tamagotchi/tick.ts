@@ -1,4 +1,4 @@
-import {LifeCycleEnum} from "@tamagotchi/tamagotchi/lifecycle";
+import {LifeCycle, LifeCycleEnum} from "@tamagotchi/tamagotchi/lifecycle";
 import {Tamagotchi} from "@tamagotchi/tamagotchi/tamagotchi";
 
 export interface Ticker {
@@ -70,40 +70,41 @@ export class Tick implements Tick{
             tamagotchi.pushEvent(TickEvents.LOw_HEALTH_DEATH);
             return;
         }
-        if (tamagotchi.getAge() > 21) {
-            if (tamagotchi.isLifeCycle(LifeCycleEnum.ADULT)) {
+
+        switch (LifeCycle.ageToLifeCycle(tamagotchi.getAge())) {
+            case LifeCycleEnum.EGG:
+                tamagotchi.setLifeCycle(LifeCycleEnum.EGG)
+                return;
+            case LifeCycleEnum.BABY:
+                if (tamagotchi.isLifeCycle(LifeCycleEnum.BABY)) {
+                    return
+                }
+                tamagotchi.pushEvent(TickEvents.BABY_HATCHED);
+                tamagotchi.setLifeCycle(LifeCycleEnum.BABY);
                 return
-            }
-            tamagotchi.pushEvent(TickEvents.ADULT);
-            tamagotchi.setLifeCycle(LifeCycleEnum.ADULT);
-            return
-        }
-        if (tamagotchi.getAge() > 12) {
-            if (tamagotchi.isLifeCycle(LifeCycleEnum.TEENAGER)) {
-                return
-            }
-            tamagotchi.pushEvent(TickEvents.TEEN);
-            tamagotchi.setLifeCycle(LifeCycleEnum.TEENAGER);
-            return;
-        }
-        if (tamagotchi.getAge() > 5) {
-            if (tamagotchi.isLifeCycle(LifeCycleEnum.CHILD)) {
-                return
-            }
-            tamagotchi.pushEvent(TickEvents.CHILD);
-            tamagotchi.setLifeCycle(LifeCycleEnum.CHILD);
-            return;
-        }
-        if (tamagotchi.getAge() >= 2.5) {
-            if (tamagotchi.isLifeCycle(LifeCycleEnum.BABY)) {
-                return
-            }
-            tamagotchi.pushEvent(TickEvents.BABY_HATCHED);
-            tamagotchi.setLifeCycle(LifeCycleEnum.BABY);
-            return
-        }
-        if (tamagotchi.getAge() > 0) {
-            tamagotchi.setLifeCycle(LifeCycleEnum.EGG)
+            case LifeCycleEnum.CHILD:
+                if (tamagotchi.isLifeCycle(LifeCycleEnum.CHILD)) {
+                    return
+                }
+                tamagotchi.pushEvent(TickEvents.CHILD);
+                tamagotchi.setLifeCycle(LifeCycleEnum.CHILD);
+                return;
+            case LifeCycleEnum.TEENAGER:
+                if (tamagotchi.isLifeCycle(LifeCycleEnum.TEENAGER)) {
+                    return
+                }
+                tamagotchi.pushEvent(TickEvents.TEEN);
+                tamagotchi.setLifeCycle(LifeCycleEnum.TEENAGER);
+                return;
+            case LifeCycleEnum.DEAD:
+                break;
+            case LifeCycleEnum.ADULT:
+                if (tamagotchi.isLifeCycle(LifeCycleEnum.ADULT)) {
+                    return
+                }
+                tamagotchi.pushEvent(TickEvents.ADULT);
+                tamagotchi.setLifeCycle(LifeCycleEnum.ADULT);
+                return;
         }
     }
 
