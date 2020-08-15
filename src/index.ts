@@ -7,10 +7,9 @@ import { string } from "@kit/string";
 async function start() {
     const myTamagotchi = tamagotchi.createTamagotchi();
     const gameTicker = new tamagotchi.Tick();
-    const Console: cli.Consoler = console;
     const clock = new time.Clock();
 
-    Console.clear();
+    console.clear();
 
     let startFrame = new cli.Frame(
         "Tamagotchi",
@@ -27,7 +26,7 @@ async function start() {
     onTimePassedListener(keyInputStream, clock);
 
     for await (const chunk of keyInputStream) {
-        Console.clear();
+        console.clear();
         draw(
             chunk.toString(),
             myTamagotchi,
@@ -37,7 +36,6 @@ async function start() {
     }
 }
 start();
-
 
 function onTimePassedListener(
     keyInputStream: stream.Pushable,

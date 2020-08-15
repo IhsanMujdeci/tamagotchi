@@ -2,6 +2,7 @@ export enum StatisticErrors{
     TO_HIGH= "Initial value to high",
     TO_LOW="Initial value to low"
 }
+
 export class Statistic {
 
     private value: number = 5;
@@ -20,6 +21,7 @@ export class Statistic {
             }
             this.value = newValue;
         }
+
     }
 
     increment(inc: number = 1){
