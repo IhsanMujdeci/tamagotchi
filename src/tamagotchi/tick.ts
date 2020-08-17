@@ -50,7 +50,7 @@ export class Tick implements Tick{
 
             this.sleepiness(tamagotchi);
             this.hunger(tamagotchi);
-            this.poopLevelMax(tamagotchi);
+            this.poop(tamagotchi);
             this.lifeCycles(tamagotchi)
         }
     }
@@ -121,20 +121,32 @@ export class Tick implements Tick{
                 tamagotchi.happiness.decrement(1);
                 tamagotchi.sleepiness.reset();
                 tamagotchi.pushEvent(TickEvents.SLEEP_SELF)
+                this.needsSleepTicker = 0
             }
         }
     }
 
-    poopLevelMax(tamagotchi: Tamagotchi){
-        if (tamagotchi.poopLevel.isMax()) {
-            this.needsPoopTicker = this.needsPoopTicker + 1;
+    getNeedsPoopTicker(){
+        return this.needsPoopTicker
+    }
 
-            if (this.needsPoopTicker > 3) {
-                tamagotchi.happiness.decrement(2);
-                tamagotchi.poopLevel.reset();
-                tamagotchi.pushEvent(TickEvents.POOP_SELF)
-            }
+    poop(tamagotchi: Tamagotchi){
+        if(!tamagotchi.isMaxPoop()){
+            return
         }
+
+        if (this.shouldSelfPoop()) {
+            tamagotchi.selfPoop();
+            tamagotchi.pushEvent(TickEvents.POOP_SELF);
+            this.needsPoopTicker = 0
+            return;
+        }
+
+        this.needsPoopTicker = this.getNeedsPoopTicker() + 1;
+    }
+
+    shouldSelfPoop(){
+        return this.getNeedsPoopTicker() > 3
     }
 
     hunger(tamagotchi: Tamagotchi) {

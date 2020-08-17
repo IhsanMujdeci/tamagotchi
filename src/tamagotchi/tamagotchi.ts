@@ -113,6 +113,14 @@ export class Tamagotchi implements UserInterfacer{
         this.events = [];
     }
 
+    isMaxPoop(){
+        return this.poopLevel.isMax()
+    }
+
+    selfPoop(){
+        this.happiness.decrement(2);
+        this.poopLevel.reset();
+    }
 }
 
 export function createTamagotchi(){
